@@ -41,7 +41,9 @@ module.exports = {
                 assigned_by: message.author.id,
                 assigned_to: user.id,
                 role_id: role.id,
-                expiry: new Date(Date.now() + duration.durationInMs)
+                guild_id: message.guild.id,
+                expiry: new Date(Date.now() + duration.durationInMs),
+                revoked: false
             });
             await tempRole.save();
 

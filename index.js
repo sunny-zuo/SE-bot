@@ -2,12 +2,14 @@ const dotenv = require('dotenv').config();
 const fs = require('fs');
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
+const { runTaskLoop } = require('./tasks');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }).then(() => {
     console.log('MongoDB database connection established');
 })
@@ -26,6 +28,8 @@ for (const file of commandFiles) {
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
     client.user.setActivity("$help");
+
+    setInterval(() => { runTaskLoop(client) }, 1000 * 60 * 10);
 });
 
 client.on('message', message => {

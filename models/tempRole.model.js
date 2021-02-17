@@ -6,7 +6,9 @@ const tempRoleSchema = new Schema({
     assigned_by: String,
     assigned_to: String,
     role_id: String,
-    expiry: Date
+    guild_id: String,
+    expiry: Date,
+    revoked: Boolean
 }, {
     timestamps: true
 })
