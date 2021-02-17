@@ -1,7 +1,18 @@
 const dotenv = require('dotenv').config();
 const fs = require('fs');
 const Discord = require('discord.js');
+const mongoose = require('mongoose');
 
+// Connect to DB
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('MongoDB database connection established');
+})
+
+// Initialize Discord Bot
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -18,7 +29,7 @@ client.once('ready', async () => {
 });
 
 client.on('message', message => {
-    const prefix = '$';
+    const prefix = process.env.PREFIX;
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ (.+)/);
