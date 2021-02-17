@@ -8,7 +8,7 @@ module.exports = {
     displayHelp: true,
     usage: "(command name)",
     execute(message, args) {
-        const prefix = process.env.prefix;
+        const prefix = process.env.PREFIX;
         const { commands } = message.client;
 
         if (!args?.length) {
