@@ -30,7 +30,7 @@ function sendSuccessEmbed(channel, title, description) {
  * @param {GuildMember} user Represents a member of a guild
  * @param {User} userInfo User data in object format with keys as described in the mongoose model
  */
-function assignRoles(user, userInfo) {
+async function assignRoles(user, userInfo) {
     // TODO: Assign the correct roles w/ email list intergration
 }
 

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const User = require('../models/user.model');
-const { sendErrorEmbed, sendSuccessEmbed } = require('../util');
+const { sendErrorEmbed, sendSuccessEmbed, assignRoles } = require('../util');
 const nodemailer = require("nodemailer");
 const mailAccount = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -30,7 +30,7 @@ module.exports = {
         if (existingUser) {
             if (existingUser.discordId === message.author.id) {
                 if (existingUser.verified) {
-                    // TODO: Run role assignment script
+                    await assignRoles(message.member, existingUser);
                     sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
                     return;
                 } else {
