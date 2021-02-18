@@ -19,7 +19,7 @@ module.exports = {
         });
 
         if (argArray.length < 3) {
-            sendErrorEmbed(message, 'Error: Missing Command Arguments', `Not all required arguments were provided. \nCommand usage: ${process.env.PREFIX}temprole (user) (role) (duration)`);
+            sendErrorEmbed(message.channel, 'Error: Missing Command Arguments', `Not all required arguments were provided. \nCommand usage: ${process.env.PREFIX}temprole (user) (role) (duration)`);
             return;
         };
 
@@ -28,11 +28,11 @@ module.exports = {
         const duration = this.parseDuration(argArray[2]);
 
         if (!role) {
-            sendErrorEmbed(message, 'Error: Invalid Role Name', `An invalid role name was provided. Make sure the role exists, and use "" to enclose role names with spaces.`);
+            sendErrorEmbed(message.channel, 'Error: Invalid Role Name', `An invalid role name was provided. Make sure the role exists, and use "" to enclose role names with spaces.`);
             return;
         }
         if (!user) {
-            sendErrorEmbed(message, 'Error: Invalid User', 'An invalid user (or no user) was specified to assign the role to.');
+            sendErrorEmbed(message.channel, 'Error: Invalid User', 'An invalid user (or no user) was specified to assign the role to.');
             return;
         }
         
@@ -47,9 +47,9 @@ module.exports = {
             });
             await tempRole.save();
 
-            sendSuccessEmbed(message, 'Temporary Role Succesfully Added', `${message.author} has given ${user} the ${argArray[1]} role for ${duration.months} months, ${duration.weeks} weeks, ${duration.days} days, and ${duration.hours} hours.`);
+            sendSuccessEmbed(message.channel, 'Temporary Role Succesfully Added', `${message.author} has given ${user} the ${argArray[1]} role for ${duration.months} months, ${duration.weeks} weeks, ${duration.days} days, and ${duration.hours} hours.`);
         }).catch(err => {
-            sendErrorEmbed(message, 'Error: Invalid Bot Permissions', 'The bot does not have permission to assign this role. Please make sure the bot has the "Manage Roles" permission and is placed above the role you would like to assign.');
+            sendErrorEmbed(message.channel, 'Error: Invalid Bot Permissions', 'The bot does not have permission to assign this role. Please make sure the bot has the "Manage Roles" permission and is placed above the role you would like to assign.');
         });
     },
     parseDuration(durationString) {

@@ -31,14 +31,14 @@ module.exports = {
             if (existingUser.discordId === message.author.id) {
                 if (existingUser.verified) {
                     // TODO: Run role assignment script
-                    sendSuccessEmbed(message, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
+                    sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
                     return;
                 } else {
-                    sendErrorEmbed(message, "Email Was Already Sent", "We've already sent a verification email. Please make sure to check your spam/junk mail!");
+                    sendErrorEmbed(message.channel, "Email Was Already Sent", "We've already sent a verification email. Please make sure to check your spam/junk mail!");
                     return;
                 }
             } else {
-                sendErrorEmbed(message, "UWID Already Registered", `The provided UWID has already been registered. If you think this is a mistake, message <@${process.env.ADMIN_ID}>.`);
+                sendErrorEmbed(message.channel, "UWID Already Registered", `The provided UWID has already been registered. If you think this is a mistake, message <@${process.env.ADMIN_ID}>.`);
                 return;
             }
         }
