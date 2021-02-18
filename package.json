@@ -19,6 +19,7 @@
   "dependencies": {
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.11.15"
+    "mongoose": "^5.11.15",
+    "nodemailer": "^6.4.18"
   }
 }
