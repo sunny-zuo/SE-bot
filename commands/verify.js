@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const User = require('../models/user.model');
 const { sendErrorEmbed, sendSuccessEmbed, assignRoles } = require('../util');
 const nodemailer = require("nodemailer");
@@ -31,15 +30,12 @@ module.exports = {
             if (existingUser.discordId === message.author.id) {
                 if (existingUser.verified) {
                     await assignRoles(message.member, existingUser);
-                    sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
-                    return;
+                    return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
                 } else {
-                    sendErrorEmbed(message.channel, "Email Was Already Sent", "We've already sent a verification email. Please make sure to check your spam/junk mail!");
-                    return;
+                    return sendErrorEmbed(message.channel, "Email Was Already Sent", "We've already sent a verification email. Please make sure to check your spam/junk mail!");
                 }
             } else {
-                sendErrorEmbed(message.channel, "UWID Already Registered", `The provided UWID has already been registered. If you think this is a mistake, message <@${process.env.ADMIN_ID}>.`);
-                return;
+                return sendErrorEmbed(message.channel, "UWID Already Registered", `The provided UWID has already been registered. If you think this is a mistake, message <@${process.env.ADMIN_ID}>.`);
             }
         }
 
@@ -52,7 +48,7 @@ module.exports = {
 
         await User.replaceOne({ discordId: message.author.id}, newUser, { upsert: true });
 
-        /*
+        
         await mailAccount.sendMail({
             from: `"SE Bot" <${process.env.EMAIL}>`,
             to: `${uwid}@uwaterloo.ca`,
@@ -66,8 +62,8 @@ module.exports = {
                 Also, if you have time, reply to this email with something random to prevent this account from being flagged as spam.
                 <hr>
                 This email was sent because a Discord user attempted to verify with your email. If you did not request this email, please ignore this message.`,
-        });*/
+        });
         
-        sendSuccessEmbed(message.channel, "Verification Email Sent", `${message.author}, we've sent a token to your UW email. Go ahead and type \`${process.env.PREFIX}confirm TOKEN\` to finsih the verification process!`)
+        return sendSuccessEmbed(message.channel, "Verification Email Sent", `${message.author}, we've sent a token to your UW email. Go ahead and type \`${process.env.PREFIX}confirm TOKEN\` to finsih the verification process!`)
     }
 }
