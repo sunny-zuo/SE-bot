@@ -27,7 +27,7 @@ for (const file of commandFiles) {
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
-    client.user.setActivity("$help");
+    client.user.setActivity(`${process.env.PREFIX}help`);
 
     setInterval(() => { runTaskLoop(client) }, 1000 * 60 * 10);
 });

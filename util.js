@@ -7,7 +7,7 @@ const Discord = require('discord.js');
  * @param {*} description 
  */
 function sendErrorEmbed(channel, title, description) {
-    channel.send(new Discord.MessageEmbed().setColor("#ff0000")
+    return channel.send(new Discord.MessageEmbed().setColor("#ff0000")
         .setTitle(title)
         .setDescription(description));
 }
@@ -19,7 +19,7 @@ function sendErrorEmbed(channel, title, description) {
  * @param {*} description
  */
 function sendSuccessEmbed(channel, title, description) {
-    channel.send(new Discord.MessageEmbed().setColor("#00ff00")
+    return channel.send(new Discord.MessageEmbed().setColor("#00ff00")
         .setTitle(title)
         .setDescription(description));
 }
