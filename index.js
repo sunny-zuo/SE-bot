@@ -3,6 +3,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const { runTaskLoop } = require('./tasks');
+const reactionRoles = require('./reactionRoles');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -28,6 +29,7 @@ for (const file of commandFiles) {
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
     client.user.setActivity(`${process.env.PREFIX}help`);
+    reactionRoles.subscribeAll(client);
     setInterval(() => { runTaskLoop(client) }, 1000 * 60 * 10);
 });
 
