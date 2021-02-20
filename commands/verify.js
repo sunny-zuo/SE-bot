@@ -16,7 +16,7 @@ module.exports = {
     description: 'Verify your UW identity for server access',
     args: true,
     guildOnly: true,
-    async execute(message, args) {
+    async execute(client, message, args) {
         // consistently format uwid
         let uwid = args.toLowerCase().replace(/[^a-z0-9.@-]/g, "");
         if (uwid.endsWith("@uwaterloo.ca")) {

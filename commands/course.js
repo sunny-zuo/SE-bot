@@ -9,7 +9,7 @@ module.exports = {
     guildOnly: false,
     displayHelp: true,
     usage: "(course)",
-    async execute(message, args) {
+    async execute(client, message, args) {
         const courseName = args.toLowerCase().replace(/[^a-z0-9]/g, "")
         const response = await fetch('https://uwflow.com/graphql', {
             method: 'POST',

@@ -7,7 +7,7 @@ module.exports = {
     args: true,
     guildOnly: true,
     displayHelp: false,
-    async execute(message, args) {
+    async execute(client, message, args) {
         const user = await User.findOne({ discordId: message.author.id });
         if (!user) {
             return sendErrorEmbed(message.channel, 'No User Found', `No user was found. You need to ${process.env.PREFIX}verify first before you can confirm!`);

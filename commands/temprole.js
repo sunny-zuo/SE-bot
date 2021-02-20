@@ -9,7 +9,7 @@ module.exports = {
     displayHelp: true,
     permissions: ["MANAGE_ROLES"],
     usage: "(user) (role) (duration)",
-    async execute(message, args) {
+    async execute(client, message, args) {
         const argArray = [];
         const regex = new RegExp('"[^"]+"|[\\S]+', 'g');
 

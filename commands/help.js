@@ -7,7 +7,7 @@ module.exports = {
     guildOnly: false,
     displayHelp: true,
     usage: "(command name)",
-    execute(message, args) {
+    execute(client, message, args) {
         const prefix = process.env.PREFIX;
         const { commands } = message.client;
 

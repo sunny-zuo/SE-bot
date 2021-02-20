@@ -28,7 +28,6 @@ for (const file of commandFiles) {
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
     client.user.setActivity(`${process.env.PREFIX}help`);
-
     setInterval(() => { runTaskLoop(client) }, 1000 * 60 * 10);
 });
 
@@ -61,10 +60,10 @@ client.on('message', message => {
     }
 
     try {
-        command.execute(message, args[0]);
+        command.execute(client, message, args[0]);
     } catch (err) {
         console.error(err);
-        message.reply('We ran into an error trying to exceute that command')
+        message.reply('We ran into an error trying to execute that command')
     }
 });
 
