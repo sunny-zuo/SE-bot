@@ -37,15 +37,21 @@ async function buildHashMap() {
 async function assignRoles(guild, user, userInfo) {
     const userHash = CryptoJS.SHA256(userInfo.uwid).toString(CryptoJS.enc.Hex);
     const cohort = hashes.get(userHash);
+    const roles = [];
     if (cohort) {
-        const roles = [];
         roles.push(guild.roles.cache.find(role => role.name === "SE"));
         roles.push(guild.roles.cache.find(role => role.name === cohort));
 
-        const cohortYear = cohort.replace(/[^0-9]/g, '');
-        roles.push(Number(cohortYear) % 2 === 0 ? guild.roles.cache.find(role => role.name === 'A-Soc') : guild.roles.cache.find(role => role.name === 'B-Soc'));
-        user.roles.add(roles);
+        const cohortYear = Number(cohort.replace(/[^0-9]/g, ''));
+        roles.push(cohortYear < 2021
+            ? guild.roles.cache.find(role => role.name === 'Alumn')
+            : cohortYear % 2 === 0 
+            ? guild.roles.cache.find(role => role.name === 'A-Soc')
+            : guild.roles.cache.find(role => role.name === 'B-Soc'));
+    } else {
+        roles.push(guild.roles.cache.find(role => role.name === "Non-SE"));
     }
+    user.roles.add(roles);
 }
 
 module.exports = { assignRoles, buildHashMap };
