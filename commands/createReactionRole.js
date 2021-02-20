@@ -14,18 +14,22 @@ module.exports = {
     async execute(client, message, args) {
         let title = "";
         const reactionRoles = [];
-        message.channel.send("Creating reaction roles: What would you like to title the prompt?");
+        const cleanupMessages = [message];
+
+        message.channel.send("Creating reaction roles: What would you like to title the prompt?").then(msg => cleanupMessages.push(msg));
 
         const filter = (m) => {
             return m.author.id === message.author.id;
         };
 
-        const collector = message.channel.createMessageCollector(filter, { time: 30000 });
+        const collector = message.channel.createMessageCollector(filter, { time: 300000 });
         
         collector.on('collect', async (m) => {
+            cleanupMessages.push(m);
+
             if (title === "") {
                 title = m.content;
-                message.channel.send("Got it. Next, send the emote followed by mentioning the role you want to assign.")
+                message.channel.send("Got it. Next, send the emote followed by mentioning the role you want to assign.").then(msg => cleanupMessages.push(msg));
             }
             else if (m.content.toLowerCase() === "end" && reactionRoles.length > 0) {
                 const description = reactionRoles.map(rr => `${rr.emote} - <@&${rr.roleId}>`).join("\n");
@@ -42,6 +46,10 @@ module.exports = {
 
                 await rr.save();
                 subscribe(client, rr);
+
+                for (cleanupMessage of cleanupMessages) {
+                    cleanupMessage.delete({ reason: "Cleanup reaction role creation messages"});
+                }
             } else {
                 let emoteName = m.content.split(" ")[0];
                 if (/(?<=:)(.*)(?=:)/g.test(emoteName)) {
@@ -54,7 +62,7 @@ module.exports = {
                     roleId: m.mentions.roles.first().id,
                     name: m.mentions.roles.first().name
                 });
-                message.channel.send("Got it. Send the emote followed by mentioning the role you want to assign, or type `end` to finish.");
+                message.channel.send("Got it. Send the emote followed by mentioning the role you want to assign, or type `end` to finish.").then(msg => cleanupMessages.push(msg));
             }
         })
     }

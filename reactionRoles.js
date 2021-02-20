@@ -16,7 +16,9 @@ async function subscribeAll(client) {
  * @param {ReactionRole} rr MongoDB ReactionRole document
  */
 async function subscribe(client, rr) {
-    const message = await client.channels.cache.get(rr.channelId).messages.fetch(rr.messageId);
+    const message = await client.channels.cache.get(rr.channelId)?.messages.fetch(rr.messageId);
+    if (!message) { return; }
+
     const roles = {};
     rr.roles.forEach(role => {
         message.react(role.emote);
