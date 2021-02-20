@@ -39,15 +39,18 @@ async function assignRoles(guild, user, userInfo) {
     const cohort = hashes.get(userHash);
     const roles = [];
     if (cohort) {
-        roles.push(guild.roles.cache.find(role => role.name === "SE"));
-        roles.push(guild.roles.cache.find(role => role.name === cohort));
-
         const cohortYear = Number(cohort.replace(/[^0-9]/g, ''));
-        roles.push(cohortYear < 2021
-            ? guild.roles.cache.find(role => role.name === 'Alumn')
-            : cohortYear % 2 === 0 
-            ? guild.roles.cache.find(role => role.name === 'A-Soc')
-            : guild.roles.cache.find(role => role.name === 'B-Soc'));
+        if (cohortYear < 2021) {
+            roles.push(guild.roles.cache.find(role => role.name === 'Alumn'));
+        } else {
+            roles.push(guild.roles.cache.find(role => role.name === "SE"));
+            roles.push(guild.roles.cache.find(role => role.name === cohort));
+            roles.push(
+                cohortYear % 2 === 0
+                    ? guild.roles.cache.find(role => role.name === 'A-Soc')
+                    : guild.roles.cache.find(role => role.name === 'B-Soc')
+            );
+        }
     } else {
         roles.push(guild.roles.cache.find(role => role.name === "Non-SE"));
     }
