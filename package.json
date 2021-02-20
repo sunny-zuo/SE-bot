@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/sunny-zuo/SE-bot#readme",
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "mongoose": "^5.11.15",

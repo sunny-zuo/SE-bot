@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
-const { sendErrorEmbed, sendSuccessEmbed, assignRoles } = require('../util');
+const { sendErrorEmbed, sendSuccessEmbed } = require('../util');
+const { assignRoles } = require('../seRoles');
 
 module.exports = {
     name: 'confirm',
@@ -14,14 +15,14 @@ module.exports = {
         }
 
         if (user.verified) {
-            assignRoles(message.member, user);
+            assignRoles(message.guild, message.member, user);
             return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
         }
 
         if (parseInt(args) === user.token) {
             user.verified = true;
             await user.save();
-            assignRoles(message.member, user);
+            assignRoles(message.guild, message.member, user);
             return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
         } else {
             return sendErrorEmbed(message.channel, 'Invalid Verification Code', 'An invalid verification code was provided. Please double check and make sure you\'re using the right code.');

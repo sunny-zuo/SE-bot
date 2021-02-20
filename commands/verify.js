@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
-const { sendErrorEmbed, sendSuccessEmbed, assignRoles } = require('../util');
+const { sendErrorEmbed, sendSuccessEmbed } = require('../util');
+const { assignRoles } = require('../seRoles');
 const nodemailer = require("nodemailer");
 const mailAccount = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -29,7 +30,7 @@ module.exports = {
         if (existingUser) {
             if (existingUser.discordId === message.author.id) {
                 if (existingUser.verified) {
-                    await assignRoles(message.member, existingUser);
+                    await assignRoles(message.guild, message.member, existingUser);
                     return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
                 } else {
                     return sendErrorEmbed(message.channel, "Email Was Already Sent", "We've already sent a verification email. Please make sure to check your spam/junk mail!");
@@ -46,7 +47,7 @@ module.exports = {
             token: Math.floor(Math.random() * 899999 + 100000)
         };
 
-        await User.replaceOne({ discordId: message.author.id}, newUser, { upsert: true });
+        await User.replaceOne({ discordId: message.author.id }, newUser, { upsert: true });
 
         
         await mailAccount.sendMail({

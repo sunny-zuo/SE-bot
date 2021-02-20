@@ -24,14 +24,4 @@ function sendSuccessEmbed(channel, title, description) {
         .setDescription(description));
 }
 
-/**
- * Assigns all correct roles to a user based on their user data.
- * 
- * @param {GuildMember} user Represents a member of a guild
- * @param {User} userInfo User data in object format with keys as described in the mongoose model
- */
-async function assignRoles(user, userInfo) {
-    // TODO: Assign the correct roles w/ email list intergration
-}
-
-module.exports = { sendErrorEmbed, sendSuccessEmbed, assignRoles };
+module.exports = { sendErrorEmbed, sendSuccessEmbed };
