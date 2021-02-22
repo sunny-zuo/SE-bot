@@ -11,21 +11,21 @@ module.exports = {
     async execute(client, message, args) {
         const user = await User.findOne({ discordId: message.author.id });
         if (!user) {
-            return sendErrorEmbed(message.channel, 'No User Found', `No user was found. You need to ${process.env.PREFIX}verify first before you can confirm!`);
+            return sendErrorEmbed(message.channel, 'No User Found', `No user was found. You need to ${process.env.PREFIX}verify first before you can confirm!`, message.author);
         }
 
         if (user.verified) {
             assignRoles(message.guild, message.member, user);
-            return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
+            return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!", message.author);
         }
 
         if (parseInt(args) === user.token) {
             user.verified = true;
             await user.save();
             assignRoles(message.guild, message.member, user);
-            return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!");
+            return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!", message.author);
         } else {
-            return sendErrorEmbed(message.channel, 'Invalid Verification Code', 'An invalid verification code was provided. Please double check and make sure you\'re using the right code.');
+            return sendErrorEmbed(message.channel, 'Invalid Verification Code', 'An invalid verification code was provided. Please double check and make sure you\'re using the right code.', message.author);
         }
     }
 }
