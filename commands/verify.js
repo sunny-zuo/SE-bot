@@ -73,12 +73,13 @@ module.exports = {
 
         await User.replaceOne({ discordId: message.author.id }, newUser, { upsert: true });
 
-        await mailAccount.sendMail({
-            from: `"SE Bot" <${process.env.EMAIL}>`,
-            to: `${uwid}@uwaterloo.ca`,
-            subject: `UW Verification Code [${newUser.token}]`,
-            text: `Token: ${newUser.token}`,
-            html: `<b>HONK</b><br>
+        try {
+            await mailAccount.sendMail({
+                from: `"SE Bot" <${process.env.EMAIL}>`,
+                to: `${uwid}@uwaterloo.ca`,
+                subject: `UW Verification Code [${newUser.token}]`,
+                text: `Token: ${newUser.token}`,
+                html: `<b>HONK</b><br>
                 Hey, your verification code is: <b>${newUser.token}</b><br>
                 You can verify yourself using this command in the Discord channel:<br>
                 <code>${process.env.PREFIX}confirm ${newUser.token}</code>
@@ -86,8 +87,12 @@ module.exports = {
                 Also, if you have time, reply to this email with something random to prevent this account from being flagged as spam.
                 <hr>
                 This email was sent because a Discord user attempted to verify with your email. If you did not request this email, please ignore this message.`,
-        });
+            });
 
-        return sendSuccessEmbed(message.channel, "Verification Email Sent", `${message.author}, we've sent a token to your UW email. Go ahead and type \`${process.env.PREFIX}confirm TOKEN\` to finish the verification process!`, message.author);
+            return sendSuccessEmbed(message.channel, "Verification Email Sent", `${message.author}, we've sent a token to your UW email. Go ahead and type \`${process.env.PREFIX}confirm TOKEN\` to finish the verification process! If you can't find the email, make sure to check your spam folder.`, message.author);
+        } catch (e) {
+            console.error(e);
+            return sendErrorEmbed(message.channel, "Email Sending Error", `We ran into an error sending the verification email. This is likely an issue with the bot. Please try again later, or message <@${process.env.ADMIN_ID}> for help.`, message.author);
+        }
     }
 }
