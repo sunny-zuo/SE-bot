@@ -28,6 +28,15 @@ async function buildHashMap() {
 }
 
 /**
+ * Returns whether or not a uwid is in the list of SE uwid hashes.
+ * 
+ * @param {String} uwid 
+ */
+function isUserSE(uwid) {
+    return hashes.get(CryptoJS.SHA256(uwid).toString(CryptoJS.enc.Hex)) !== undefined;
+}
+
+/**
  * Assigns all correct roles to a user based on their user data.
  * 
  * @param {Guild} guild Server to assign role(s) on
@@ -57,4 +66,4 @@ async function assignRoles(guild, user, userInfo) {
     user.roles.add(roles);
 }
 
-module.exports = { assignRoles, buildHashMap };
+module.exports = { assignRoles, buildHashMap, isUserSE };
