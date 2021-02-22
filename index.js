@@ -2,9 +2,11 @@ const dotenv = require('dotenv').config();
 const fs = require('fs');
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
+const User = require('./models/user.model');
 const { runTaskLoop } = require('./tasks');
 const seRoles = require('./seRoles');
 const reactionRoles = require('./reactionRoles');
+const { sendSuccessEmbed } = require('./util');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -70,5 +72,13 @@ client.on('message', message => {
         message.reply('We ran into an error trying to execute that command')
     }
 });
+
+client.on('guildMemberAdd', async (member) => {
+    const userInfo = await User.findOne({ discordId: member.id });
+    if (userInfo && userInfo.verified) {
+        seRoles.assignRoles(member.guild, member, userInfo);
+        sendSuccessEmbed(member, `Welcome to ${member.guild.name}!`, `Since you've already verified with the bot in the past, you've been automatically verified in ${member.guild.name}.`);
+    }
+})
 
 client.login(process.env.DISCORD_TOKEN);
