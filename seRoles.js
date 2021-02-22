@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const CryptoJS = require('crypto-js');
+const Discord = require('discord.js');
 
 const hashes = new Map();
 
@@ -39,9 +40,9 @@ function isUserSE(uwid) {
 /**
  * Assigns all correct roles to a user based on their user data.
  * 
- * @param {Guild} guild Server to assign role(s) on
- * @param {GuildMember} user Represents a member of a guild
- * @param {User} userInfo User data in object format with keys as described in the mongoose model
+ * @param {Discord.Guild} guild Server to assign role(s) on
+ * @param {Discord.GuildMember} user Represents a member of a guild
+ * @param {Object} userInfo User data in object format with keys as described in the mongoose model
  */
 async function assignRoles(guild, user, userInfo) {
     const userHash = CryptoJS.SHA256(userInfo.uwid).toString(CryptoJS.enc.Hex);
