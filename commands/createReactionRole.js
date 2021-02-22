@@ -33,7 +33,7 @@ module.exports = {
             }
             else if (m.content.toLowerCase() === "end" && reactionRoles.length > 0) {
                 const description = reactionRoles.map(rr => `${rr.emote} - <@&${rr.roleId}>`).join("\n");
-                const embed = await message.channel.send(new Discord.MessageEmbed().setColor("#0000ff")
+                const embed = await message.channel.send(new Discord.MessageEmbed().setColor("#1E90FF")
                     .setTitle(title)
                     .setDescription(description));
 
