@@ -73,7 +73,7 @@ module.exports = {
 
         await User.replaceOne({ discordId: message.author.id }, newUser, { upsert: true });
 
-        /*await mailAccount.sendMail({
+        await mailAccount.sendMail({
             from: `"SE Bot" <${process.env.EMAIL}>`,
             to: `${uwid}@uwaterloo.ca`,
             subject: `UW Verification Code [${newUser.token}]`,
@@ -86,7 +86,7 @@ module.exports = {
                 Also, if you have time, reply to this email with something random to prevent this account from being flagged as spam.
                 <hr>
                 This email was sent because a Discord user attempted to verify with your email. If you did not request this email, please ignore this message.`,
-        });*/
+        });
 
         return sendSuccessEmbed(message.channel, "Verification Email Sent", `${message.author}, we've sent a token to your UW email. Go ahead and type \`${process.env.PREFIX}confirm TOKEN\` to finish the verification process!`, message.author);
     }
