@@ -7,6 +7,7 @@ const { runTaskLoop } = require('./tasks');
 const seRoles = require('./seRoles');
 const reactionRoles = require('./reactionRoles');
 const { sendSuccessEmbed } = require('./util');
+const expressServer = require('./server/server');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
