@@ -17,6 +17,7 @@ module.exports = {
      */
     async execute(client, message, args) {
         let description = `This server has ${message.guild.memberCount} total members:\n`;
+        await message.guild.members.fetch();
         await message.guild.roles.fetch();
 
         const emailHashFolder = './data/';
