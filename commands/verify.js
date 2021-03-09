@@ -53,7 +53,7 @@ module.exports = {
                 If everything seems correct, message <@${process.env.ADMIN_ID}> for help.`,
                 "#1E90FF", message.author
             ).then(() => {
-               message.channel.awaitMessages(filter, { max: 1, time: 30000 }).then(m =>{
+               message.channel.awaitMessages(filter, { max: 2, time: 5 * 60 * 1000 }).then(m =>{
                    if (m.first().content === "continue") {
                        this.finishVerification(message, uwid);
                    }

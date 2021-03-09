@@ -50,7 +50,7 @@ async function assignRoles(guild, user, userInfo) {
     const roles = [];
     if (cohort) {
         const cohortYear = Number(cohort.replace(/[^0-9]/g, ''));
-        if (cohortYear < 2021) {
+        if (cohortYear < process.env.MIN_GRAD_YEAR) {
             roles.push(guild.roles.cache.find(role => role.name === 'Alumn'));
         } else {
             roles.push(guild.roles.cache.find(role => role.name === "SE"));
