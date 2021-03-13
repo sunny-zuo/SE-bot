@@ -35,7 +35,9 @@ module.exports = {
         let emailList = 'Email list: (message will be deleted in 30 seconds)\n';
         for (userId of userSet) {
             const userData = await User.findOne({ discordId: userId });
-            emailList += `${userData.uwid}@uwaterloo.ca,\n`;
+            if (userData) {
+                emailList += `${userData.uwid}@uwaterloo.ca,\n`;
+            }
         }
         
         message.channel.send(emailList).then(sentMessage => {
