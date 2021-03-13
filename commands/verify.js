@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const Discord = require('discord.js');
 const CryptoJS = require('crypto-js');
 const { sendSuccessEmbed, sendErrorEmbed } = require('../util');
 
