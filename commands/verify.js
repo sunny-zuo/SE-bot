@@ -1,6 +1,6 @@
 const User = require('../models/user.model');
 const CryptoJS = require('crypto-js');
-const { sendSuccessEmbed } = require('../util');
+const { sendSuccessEmbed, sendErrorEmbed } = require('../util');
 
 module.exports = {
     name: 'verify',
@@ -14,29 +14,35 @@ module.exports = {
         if (existingUser) {
             try {
                 message.author.send(`You are already verified! You can try to reverify if you want (and update your profile info, including faculty), but it likely won't make a difference.`);
-                sendSuccessEmbed(message.author, 'Verification Prompt', `[Click here to login using your UWaterloo account to verify.](${process.env.SERVER_URI}/verify/${encodedUID})
+                message.author.send(new Discord.MessageEmbed().setColor("#00ff00")
+                    .setTitle('Verification Prompt')
+                    .setDescription(`[Click here to login using your UWaterloo account to verify.](${process.env.SERVER_URI}/verify/${encodedUID})
                 Authorization allows us to read your profile information to confirm that you are/were a UW student, and you can revoke this permission at any time.
-                If you run into issues, message <@!282326223521316866> for help!`);
+                If you run into issues, message <@!282326223521316866> for help!`));
                 message.channel.send(`${message.author}, we've DMed your a verification link. Please check your DMs!`);
             } catch (e) {
-                message.channel.send(`${message.author}, we seem to be unable to DM you a verification link. Please directly message the bot with \`${process.env.PREFIX}verify\` to verify.`);
+                sendErrorEmbed(message.channel, 'Unable to DM Verification Link', 'We seem to be unable to DM you a verification link. Please [temporarily change your privacy settings](https://cdn.discordapp.com/attachments/811741914340393000/820114337514651658/permissions.png) to allow direct messages from server members in order to verify.', message.author);
             }
             return;
         }
 
         // Check if message is in DMs
         if (message.guild == null) {
-            sendSuccessEmbed(message.channel, 'Verification Prompt', `[Click here to login using your UWaterloo account to verify.](${process.env.SERVER_URI}/verify/${encodedUID})
+            message.author.send(new Discord.MessageEmbed().setColor("#00ff00")
+                .setTitle('Verification Prompt')
+                .setDescription(`[Click here to login using your UWaterloo account to verify.](${process.env.SERVER_URI}/verify/${encodedUID})
                 Authorization allows us to read your profile information to confirm that you are/were a UW student, and you can revoke this permission at any time.
-                If you run into issues, message <@!282326223521316866> for help!`);
+                If you run into issues, message <@!282326223521316866> for help!`));
         } else {
             try {
-                sendSuccessEmbed(message.author, 'Verification Prompt', `[Click here to login using your UWaterloo account to verify.](${process.env.SERVER_URI}/verify/${encodedUID})
+                message.author.send(new Discord.MessageEmbed().setColor("#00ff00")
+                    .setTitle('Verification Prompt')
+                    .setDescription(`[Click here to login using your UWaterloo account to verify.](${process.env.SERVER_URI}/verify/${encodedUID})
                 Authorization allows us to read your profile information to confirm that you are/were a UW student, and you can revoke this permission at any time.
-                If you run into issues, message <@!282326223521316866> for help!`);
+                If you run into issues, message <@!282326223521316866> for help!`));
                 message.channel.send(`${message.author}, we've DMed your a verification link. Please check your DMs!`);
             } catch (e) {
-                message.channel.send(`${message.author}, we seem to be unable to DM you a verification link. Please directly message the bot with \`${process.env.PREFIX}verify\` to verify.`);
+                sendErrorEmbed(message.channel, 'Unable to DM Verification Link', 'We seem to be unable to DM you a verification link. Please [temporarily change your privacy settings](https://cdn.discordapp.com/attachments/811741914340393000/820114337514651658/permissions.png) to allow direct messages from server members in order to verify.', message.author);
             }
             return;
         }
