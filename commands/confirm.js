@@ -1,31 +1,12 @@
-const User = require('../models/user.model');
-const { sendErrorEmbed, sendSuccessEmbed } = require('../util');
-const { assignRoles } = require('../seRoles');
+const { sendErrorEmbed } = require('../util');
 
 module.exports = {
     name: 'confirm',
     description: 'Confirm your UW identity with the code provided in the verify step',
-    args: true,
+    args: false,
     guildOnly: true,
     displayHelp: false,
     async execute(client, message, args) {
-        const user = await User.findOne({ discordId: message.author.id });
-        if (!user) {
-            return sendErrorEmbed(message.channel, 'No User Found', `No user was found. You need to ${process.env.PREFIX}verify first before you can confirm!`, message.author);
-        }
-
-        if (user.verified) {
-            assignRoles(message.guild, message.member, user);
-            return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!", message.author);
-        }
-
-        if (parseInt(args) === user.token) {
-            user.verified = true;
-            await user.save();
-            assignRoles(message.guild, message.member, user);
-            return sendSuccessEmbed(message.channel, "Verified Successfully!", "You have been successfully verified. Welcome to the server!", message.author);
-        } else {
-            return sendErrorEmbed(message.channel, 'Invalid Verification Code', 'An invalid verification code was provided. Please double check and make sure you\'re using the right code.', message.author);
-        }
+        return sendErrorEmbed(message.channel, 'Command No Longer Supported', `We've migrated to OAuth verification, so all pending verifications have been deleted. Please verify again using \`${process.env.PREFIX}verify\``, message.author);
     }
 }

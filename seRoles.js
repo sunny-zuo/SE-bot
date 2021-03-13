@@ -4,7 +4,12 @@ const CryptoJS = require('crypto-js');
 const Discord = require('discord.js');
 
 const hashes = new Map();
+let client;
 
+function init(discordClient) {
+    buildHashMap();
+    client = discordClient;
+}
 /**
  * Read all files containing uwid hashes to build a map for easier usage.
  * Hash files should be named "se20XX.hash" and contain one hash per line
@@ -38,13 +43,13 @@ function isUserSE(uwid) {
 }
 
 /**
- * Assigns all correct roles to a user based on their user data.
+ * Assigns all correct roles to a user based on their user data in the guild specified in the .env
  * 
- * @param {Discord.Guild} guild Server to assign role(s) on
- * @param {Discord.GuildMember} user Represents a member of a guild
  * @param {Object} userInfo User data in object format with keys as described in the mongoose model
  */
-async function assignRoles(guild, user, userInfo) {
+async function assignRoles(userInfo) {
+    const guild = await client.guilds.fetch(process.env.GUILD_ID);
+    const member = await guild.members.fetch(userInfo.discordId);
     const userHash = CryptoJS.SHA256(userInfo.uwid).toString(CryptoJS.enc.Hex);
     const cohort = hashes.get(userHash);
     const roles = [];
@@ -64,7 +69,7 @@ async function assignRoles(guild, user, userInfo) {
     } else {
         roles.push(guild.roles.cache.find(role => role.name === "Non-SE"));
     }
-    user.roles.add(roles);
+    member.roles.add(roles);
 }
 
-module.exports = { assignRoles, buildHashMap, isUserSE };
+module.exports = { assignRoles, buildHashMap, isUserSE, init };

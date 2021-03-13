@@ -8,6 +8,9 @@ const seRoles = require('./seRoles');
 const reactionRoles = require('./reactionRoles');
 const { sendSuccessEmbed } = require('./util');
 const expressServer = require('./server/server');
+const axios = require('axios').default;
+
+axios.defaults.validateStatus = false;
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -34,7 +37,7 @@ client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
     client.user.setActivity(`${process.env.PREFIX}help`);
     reactionRoles.subscribeAll(client);
-    seRoles.buildHashMap();
+    seRoles.init(client);
     setInterval(() => { runTaskLoop(client) }, 1000 * 60 * 10);
 });
 
@@ -76,10 +79,12 @@ client.on('message', message => {
 
 client.on('guildMemberAdd', async (member) => {
     const userInfo = await User.findOne({ discordId: member.id });
-    if (userInfo && userInfo.verified) {
-        seRoles.assignRoles(member.guild, member, userInfo);
+    if (userInfo) {
+        seRoles.assignRoles(userInfo);
         sendSuccessEmbed(member, `Welcome to ${member.guild.name}!`, `Since you've already verified with the bot in the past, you've been automatically verified in ${member.guild.name}.`);
     }
 })
 
 client.login(process.env.DISCORD_TOKEN);
+
+module.exports = { client };
