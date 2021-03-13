@@ -53,6 +53,7 @@ async function assignRoles(userInfo) {
     const userHash = CryptoJS.SHA256(userInfo.uwid).toString(CryptoJS.enc.Hex);
     const cohort = hashes.get(userHash);
     const roles = [];
+
     if (cohort) {
         const cohortYear = Number(cohort.replace(/[^0-9]/g, ''));
         if (cohortYear < process.env.MIN_GRAD_YEAR) {
@@ -67,7 +68,11 @@ async function assignRoles(userInfo) {
             );
         }
     } else {
-        roles.push(guild.roles.cache.find(role => role.name === "Non-SE"));
+        if (userInfo.department === "VPA/Software Engineering") {
+            roles.push(guild.roles.cache.find(role => role.name === "SE"));
+        } else {
+            roles.push(guild.roles.cache.find(role => role.name === "Non-SE"));
+        }
     }
     member.roles.add(roles);
 }
