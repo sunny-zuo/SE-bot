@@ -62,7 +62,7 @@ app.get('/authorize', async (req, res) => {
             refreshToken: refresh_token
         }
 
-        await User.replaceOne({ uwid: uwid }, user, { upsert: true });
+        await User.replaceOne({ discordId: discordId }, user, { upsert: true });
         assignRoles(user);
 
         res.send('You\'ve been verified successfully! You can close this window and return to Discord.');
