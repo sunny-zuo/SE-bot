@@ -30,7 +30,7 @@ app.get('/authorize', async (req, res) => {
         const getTokenParams = new URLSearchParams();
         getTokenParams.append('client_id', process.env.CLIENT_ID);
         getTokenParams.append('scope', 'user.read offline_access');
-        getTokenParams.append('redirect_uri', 'https://sebot.sunnyzuo.com/authorize');
+        getTokenParams.append('redirect_uri', `${process.env.SERVER_URI}/authorize`);
         getTokenParams.append('grant_type', 'authorization_code');
         getTokenParams.append('client_secret', process.env.CLIENT_SECRET);
         getTokenParams.append('code', req.query.code);
@@ -64,6 +64,11 @@ app.get('/authorize', async (req, res) => {
 
         await User.replaceOne({ discordId: discordId }, user, { upsert: true });
         assignRoles(user);
+
+        if (process.env.FORWARD_URI) {
+            // We forward successful auth to https://github.com/sunny-zuo/sir-goose-bot to unify authentication
+            axios.post(process.env.FORWARD_URI, user);
+        }
 
         res.send('You\'ve been verified successfully! You can close this window and return to Discord.');
     } catch (e) {
