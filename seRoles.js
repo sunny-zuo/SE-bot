@@ -49,7 +49,10 @@ function isUserSE(uwid) {
  */
 async function assignRoles(userInfo) {
     const guild = await client.guilds.fetch(process.env.GUILD_ID);
+    if (!guild) { return; }
     const member = await guild.members.fetch(userInfo.discordId);
+    if (!member) { return; }
+
     const userHash = CryptoJS.SHA256(userInfo.uwid).toString(CryptoJS.enc.Hex);
     const cohort = hashes.get(userHash);
     const roles = [];
