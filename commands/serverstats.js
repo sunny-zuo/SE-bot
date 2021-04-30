@@ -40,10 +40,16 @@ module.exports = {
             }
         };
 
-        let alumnRoleId = message.guild.roles.cache.find(role => role.name === "Alumn")?.id;
+        const se2026RoleId = message.guild.roles.cache.find(role => role.name === "SE 2026")?.id;
+        description += `**SE 2026**: ${(se2026RoleId) ? message.guild.roles.cache.get(se2026RoleId).members.size : 0}/??? Members\n`
+
+        const se2026AdmitRoleId = message.guild.roles.cache.find(role => role.name === "SE 2026 Admit")?.id;
+        description += `**SE 2026 Admit**: ${(se2026AdmitRoleId) ? message.guild.roles.cache.get(se2026AdmitRoleId).members.size : 0}/??? Members\n`
+
+        const alumnRoleId = message.guild.roles.cache.find(role => role.name === "Alumn")?.id;
         description += `**Alumn**: ${(alumnRoleId) ? message.guild.roles.cache.get(alumnRoleId).members.size : 0} Members\n`
 
-        let nonSERoleId = message.guild.roles.cache.find(role => role.name === "Non-SE")?.id;
+        const nonSERoleId = message.guild.roles.cache.find(role => role.name === "Non-SE")?.id;
         description += `**Non-SE**: ${(alumnRoleId) ? message.guild.roles.cache.get(nonSERoleId).members.size : 0} Members\n`
 
         return message.channel.send(new Discord.MessageEmbed()
