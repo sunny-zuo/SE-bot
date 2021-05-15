@@ -78,7 +78,9 @@ async function assignRoles(userInfo) {
         }
     }
     member.roles.add(roles);
-    member.setNickname(userInfo.givenName);
+    if (userInfo.givenName) {
+        member.setNickname(userInfo.givenName);
+    }
 }
 
 module.exports = { assignRoles, buildHashMap, isUserSE, init };
