@@ -86,7 +86,7 @@ client.on('message', message => {
 
 client.on('guildMemberAdd', async (member) => {
     const userInfo = await User.findOne({ discordId: member.id });
-    if (userInfo) {
+    if (userInfo && userInfo.givenName) {
         seRoles.assignRoles(userInfo);
         sendSuccessEmbed(member, `Welcome to ${member.guild.name}!`, `Since you've already verified with the bot in the past, you've been automatically verified in ${member.guild.name}.`);
     }
