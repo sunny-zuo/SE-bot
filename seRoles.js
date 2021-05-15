@@ -78,7 +78,7 @@ async function assignRoles(userInfo) {
         }
     }
     member.roles.add(roles);
-    if (userInfo.givenName) {
+    if (userInfo.givenName && !member.nickname) {
         member.setNickname(userInfo.givenName);
     }
 }
