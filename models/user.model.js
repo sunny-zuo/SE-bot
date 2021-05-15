@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     discordId: String,
     uwid: String,
+    givenName: String,
+    surname: String,
     department: String,
     o365CreatedDate: Date,
     refreshToken: String

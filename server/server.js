@@ -45,7 +45,7 @@ app.get('/authorize', async (req, res) => {
         }
         const { access_token, refresh_token } = getTokenRes.data;
 
-        const userDataReq = await axios.get(`https://graph.microsoft.com/v1.0/me?$select=department,createdDateTime,userPrincipalName`, {
+        const userDataReq = await axios.get(`https://graph.microsoft.com/v1.0/me?$select=department,createdDateTime,userPrincipalName,givenName,surname`, {
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
@@ -60,6 +60,8 @@ app.get('/authorize', async (req, res) => {
         let user = {
             discordId: discordId,
             uwid: uwid,
+            givenName: userDataReq.data.givenName,
+            surname: userDataReq.data.surname,
             department: userDataReq.data.department,
             o365CreatedDate: new Date(userDataReq.data.createdDateTime),
             refreshToken: refresh_token
