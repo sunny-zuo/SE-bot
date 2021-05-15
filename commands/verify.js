@@ -13,7 +13,7 @@ module.exports = {
         const encodedUID = CryptoJS.AES.encrypt(`${message.author.id}-sebot`, process.env.AES_PASSPHRASE).toString().replace(/\//g, '_').replace(/\+/g, '-');
 
         const existingUser = await User.findOne({ discordId: message.author.id });
-        if (existingUser) {
+        if (existingUser && existingUser.givenName) {
             try {
                 assignRoles(existingUser);
                 sendSuccessEmbed(message.channel, 'Verified Successfully', 'You\'ve been successfully verified!', message.author);
