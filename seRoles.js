@@ -73,6 +73,11 @@ async function assignRoles(userInfo) {
     } else {
         if (userInfo.department === "VPA/Software Engineering") {
             roles.push(guild.roles.cache.find(role => role.name === "SE"));
+
+            if (userInfo.o365CreatedDate.getFullYear() === 2021) {
+                roles.push(guild.roles.cache.find(role => role.name === "SE 2026"));
+                roles.push(guild.roles.cache.find(role => role.name === 'A-Soc'));
+            }
         } else {
             roles.push(guild.roles.cache.find(role => role.name === "Non-SE"));
         }
